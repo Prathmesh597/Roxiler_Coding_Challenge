@@ -1,0 +1,40 @@
+-- Roxiler Coding Challenge
+-- Database Schema
+-- MySQL
+
+CREATE DATABASE IF NOT EXISTS roxiler_challenge;
+USE roxiler_challenge;
+
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(60) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    address VARCHAR(400) NOT NULL,
+    role ENUM('admin', 'user', 'store_owner') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE stores (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(60) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    address VARCHAR(400) NOT NULL,
+    owner_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE SET NULL
+);
+
+CREATE TABLE ratings (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    store_id INT NOT NULL,
+    rating TINYINT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (store_id) REFERENCES stores(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_user_store (user_id, store_id)
+);
