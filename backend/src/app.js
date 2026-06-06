@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const adminRoutes = require("./routes/admin.routes");
+const userRoutes = require("./routes/user.routes");
+
 
 
 //Load .env file
@@ -20,6 +22,9 @@ app.use(express.json()); //convert incoming data into json format
 app.use("/api/auth", authRoutes);
 
 app.use("/api/admin", adminRoutes);
+
+app.use("/api/user", userRoutes);
+
 
 
 app.get("/", (req,res) =>{
